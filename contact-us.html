@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact Us | DogAI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="support.css">
+</head>
+<body>
+  <div class="support-wrap">
+    <div class="support-nav">
+      <a class="support-brand" href="index.html">Dog<span>AI</span>.in</a>
+      <a class="back-link" href="index.html">← Back to Home</a>
+    </div>
+
+    <section class="support-hero">
+      <h1>Contact Us</h1>
+      <p>Need help with orders, payments, account, or consultation? Send us a message.</p>
+    </section>
+
+    <section class="support-grid">
+      <article class="support-card">
+        <h3>Send a Message</h3>
+        <form id="contactForm" class="contact-form">
+          <input id="name" required placeholder="Your name" class="form-input" />
+          <input id="email" type="email" required placeholder="Your email" class="form-input" />
+          <input id="phone" placeholder="Phone (optional)" class="form-input" />
+          <input id="subject" required placeholder="Subject" class="form-input" />
+          <textarea id="message" required placeholder="Your message" rows="5"></textarea>
+          <button class="btn-primary" type="submit">Send Message</button>
+          <div id="msg" class="message"></div>
+        </form>
+      </article>
+
+      <article class="support-card">
+        <h3>Tips for Faster Support</h3>
+        <ul>
+          <li>Include order ID if your issue is order-related.</li>
+          <li>Use the email linked to your DogAI account.</li>
+          <li>For payment issues, mention payment method and time.</li>
+        </ul>
+      </article>
+    </section>
+  </div>
+
+  <script src="api.js"></script>
+  <script>
+    document.getElementById('contactForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const body = {
+        name: document.getElementById('name').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        phone: document.getElementById('phone').value.trim(),
+        subject: document.getElementById('subject').value.trim(),
+        message: document.getElementById('message').value.trim()
+      };
+
+      const res = await apiCall('/contact', 'POST', body);
+      const msg = document.getElementById('msg');
+
+      if (res.success) {
+        msg.textContent = 'Message sent successfully. We will respond within 24 hours.';
+        msg.style.color = '#166534';
+        e.target.reset();
+      } else {
+        msg.textContent = res.message || 'Could not send message.';
+        msg.style.color = '#b91c1c';
+      }
+    });
+  </script>
+</body>
+</html>

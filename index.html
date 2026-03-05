@@ -1,0 +1,2336 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DogAI.in — India's Premium Pet Marketplace</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+
+  <style>
+    :root {
+      --cream: #FDF6ED;
+      --warm-white: #FEFCF8;
+      --amber: #E8A020;
+      --amber-dark: #C4841A;
+      --forest: #2D4A2D;
+      --forest-light: #3D6B3D;
+      --terracotta: #C4622D;
+      --terracotta-light: #E8845A;
+      --charcoal: #1E1E1E;
+      --mid-gray: #6B6B6B;
+      --light-gray: #E8E4DC;
+      --card-bg: #FFFBF4;
+      --shadow-warm: 0 8px 32px rgba(100, 60, 10, 0.12);
+      --shadow-hover: 0 20px 60px rgba(100, 60, 10, 0.2);
+      --radius: 16px;
+      --radius-sm: 10px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--charcoal);
+      overflow-x: hidden;
+    }
+
+    /* ─── NOISE TEXTURE OVERLAY ─── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.4;
+    }
+
+    /* ─── NAVBAR ─── */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      background: rgba(253, 246, 237, 0.92);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(232, 160, 32, 0.2);
+      padding: 0 40px;
+      height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.3s ease;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .logo-icon {
+      width: 42px;
+      height: 42px;
+      background: linear-gradient(135deg, var(--amber), var(--terracotta));
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      box-shadow: 0 4px 12px rgba(232, 160, 32, 0.35);
+    }
+
+    .logo-text {
+      font-family: 'Playfair Display', serif;
+      font-size: 24px;
+      font-weight: 900;
+      color: var(--charcoal);
+      letter-spacing: -0.5px;
+    }
+
+    .logo-text span {
+      color: var(--amber);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--mid-gray);
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.3px;
+      transition: color 0.2s;
+      position: relative;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--amber);
+      transform: scaleX(0);
+      transform-origin: center;
+      transition: transform 0.25s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--charcoal);
+    }
+
+    .nav-links a:hover::after {
+      transform: scaleX(1);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn {
+      padding: 10px 22px;
+      border-radius: 100px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      border: none;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--charcoal);
+      border: 1.5px solid var(--light-gray);
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--amber);
+      color: var(--amber);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--amber), var(--terracotta));
+      color: white;
+      box-shadow: 0 4px 16px rgba(232, 160, 32, 0.35);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(232, 160, 32, 0.45);
+    }
+
+    .cart-btn {
+      position: relative;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: var(--card-bg);
+      border: 1.5px solid var(--light-gray);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 18px;
+      transition: all 0.2s;
+    }
+
+    .cart-btn:hover {
+      border-color: var(--amber);
+      transform: scale(1.05);
+    }
+
+    .cart-badge {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      background: var(--terracotta);
+      color: white;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      font-size: 10px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid var(--cream);
+      display: none;
+    }
+
+    .cart-badge.visible {
+      display: flex;
+    }
+
+    /* ─── HERO ─── */
+    .hero {
+      min-height: 100vh;
+      padding: 120px 40px 80px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      gap: 60px;
+      max-width: 1280px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(232, 160, 32, 0.12);
+      border: 1px solid rgba(232, 160, 32, 0.3);
+      border-radius: 100px;
+      padding: 6px 16px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--amber-dark);
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+      animation: fadeInUp 0.6s ease both;
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(42px, 5vw, 72px);
+      line-height: 1.08;
+      font-weight: 900;
+      color: var(--charcoal);
+      margin-bottom: 24px;
+      animation: fadeInUp 0.6s 0.1s ease both;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--amber);
+      display: block;
+    }
+
+    .hero-desc {
+      font-size: 17px;
+      line-height: 1.7;
+      color: var(--mid-gray);
+      max-width: 480px;
+      margin-bottom: 40px;
+      animation: fadeInUp 0.6s 0.2s ease both;
+      font-weight: 400;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      animation: fadeInUp 0.6s 0.3s ease both;
+    }
+
+    .hero-actions .btn {
+      font-size: 15px;
+      padding: 14px 28px;
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 32px;
+      margin-top: 56px;
+      animation: fadeInUp 0.6s 0.4s ease both;
+    }
+
+    .stat {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--charcoal);
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: var(--mid-gray);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .stat-divider {
+      width: 1px;
+      background: var(--light-gray);
+    }
+
+    /* Hero visual */
+    .hero-visual {
+      position: relative;
+      animation: fadeInRight 0.8s 0.2s ease both;
+    }
+
+    .hero-card-main {
+      background: var(--card-bg);
+      border-radius: 28px;
+      overflow: hidden;
+      box-shadow: var(--shadow-warm);
+      border: 1px solid rgba(232, 160, 32, 0.15);
+    }
+
+    .hero-img-placeholder {
+      height: 380px;
+      background: linear-gradient(135deg, #F5E6C8 0%, #E8D5A8 40%, #D4B87A 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 120px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-img-placeholder::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 30% 70%, rgba(232, 160, 32, 0.3) 0%, transparent 60%);
+    }
+
+    .hero-card-info {
+      padding: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .pet-info h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 700;
+    }
+
+    .pet-info p {
+      font-size: 13px;
+      color: var(--mid-gray);
+      margin-top: 2px;
+    }
+
+    .pet-price {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--amber);
+    }
+
+    .floating-cards {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      right: -20px;
+      top: 60px;
+    }
+
+    .float-card {
+      background: white;
+      border-radius: 16px;
+      padding: 14px 18px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(232, 160, 32, 0.15);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      animation: float 3s ease-in-out infinite;
+      min-width: 180px;
+    }
+
+    .float-card:nth-child(2) {
+      animation-delay: 1.5s;
+    }
+
+    .float-icon {
+      font-size: 24px;
+    }
+
+    .float-info {
+      font-size: 12px;
+    }
+
+    .float-info strong {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    /* ─── SECTION STYLES ─── */
+    section {
+      padding: 80px 40px;
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    .section-header {
+      margin-bottom: 48px;
+    }
+
+    .section-tag {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(28px, 3.5vw, 44px);
+      font-weight: 700;
+      line-height: 1.15;
+      color: var(--charcoal);
+    }
+
+    .section-desc {
+      font-size: 15px;
+      color: var(--mid-gray);
+      margin-top: 12px;
+      max-width: 500px;
+      line-height: 1.6;
+    }
+
+    /* ─── CATEGORY STRIP ─── */
+    .categories-section {
+      background: var(--charcoal);
+      padding: 60px 40px;
+    }
+
+    .categories-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 16px;
+      margin-top: 40px;
+    }
+
+    .cat-card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--radius);
+      padding: 28px 16px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
+
+    .cat-card:hover {
+      background: rgba(232, 160, 32, 0.15);
+      border-color: var(--amber);
+      transform: translateY(-4px);
+    }
+
+    .cat-icon {
+      font-size: 36px;
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .cat-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: white;
+      letter-spacing: 0.3px;
+    }
+
+    .cat-count {
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.4);
+      margin-top: 4px;
+    }
+
+    .section-title.light {
+      color: white;
+    }
+
+    .section-tag.light {
+      color: var(--amber);
+    }
+
+    /* ─── PETS GRID ─── */
+    .pets-section {
+      background: var(--warm-white);
+    }
+
+    .filter-bar {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 36px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .filter-btn {
+      padding: 8px 20px;
+      border-radius: 100px;
+      background: transparent;
+      border: 1.5px solid var(--light-gray);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      color: var(--mid-gray);
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .filter-btn.active,
+    .filter-btn:hover {
+      background: var(--charcoal);
+      color: white;
+      border-color: var(--charcoal);
+    }
+
+    .pets-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+    }
+
+    .pet-card {
+      background: var(--card-bg);
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid rgba(232, 160, 32, 0.12);
+      transition: all 0.3s ease;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .pet-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .pet-card-img {
+      height: 220px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 72px;
+      position: relative;
+      background: linear-gradient(135deg, #F7EED8, #EDD9A3);
+    }
+
+    .pet-badge {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: var(--forest);
+      color: white;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 100px;
+      letter-spacing: 0.5px;
+    }
+
+    .pet-badge.new {
+      background: var(--terracotta);
+    }
+
+    .pet-badge.sold {
+      background: var(--mid-gray);
+    }
+
+    .wishlist-btn {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: white;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s;
+    }
+
+    .wishlist-btn:hover {
+      transform: scale(1.15);
+    }
+
+    .pet-card-body {
+      padding: 18px;
+    }
+
+    .pet-breed {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--amber);
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+    }
+
+    .pet-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      font-weight: 700;
+      margin: 4px 0 6px;
+    }
+
+    .pet-meta {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .meta-item {
+      font-size: 12px;
+      color: var(--mid-gray);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .pet-card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 14px;
+      border-top: 1px solid var(--light-gray);
+    }
+
+    .pet-price-display {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--forest);
+    }
+
+    .add-cart-btn {
+      padding: 8px 18px;
+      border-radius: 100px;
+      background: linear-gradient(135deg, var(--amber), var(--terracotta));
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      font-family: 'DM Sans', sans-serif;
+      transition: all 0.25s;
+    }
+
+    .add-cart-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 16px rgba(232, 160, 32, 0.4);
+    }
+
+    /* ─── PRODUCTS ─── */
+    .products-section {
+      background: var(--cream);
+    }
+
+    .products-tabs {
+      display: flex;
+      gap: 0;
+      margin-bottom: 36px;
+      background: var(--light-gray);
+      border-radius: 100px;
+      padding: 4px;
+      width: fit-content;
+    }
+
+    .tab-btn {
+      padding: 10px 24px;
+      border-radius: 100px;
+      border: none;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      background: transparent;
+      color: var(--mid-gray);
+      font-family: 'DM Sans', sans-serif;
+      transition: all 0.25s;
+    }
+
+    .tab-btn.active {
+      background: white;
+      color: var(--charcoal);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    .product-card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      transition: all 0.3s ease;
+    }
+
+    .product-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-warm);
+    }
+
+    .product-img {
+      height: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 60px;
+      background: linear-gradient(135deg, #F0E8D0, #E0D0A8);
+    }
+
+    .product-body {
+      padding: 16px;
+    }
+
+    .product-cat {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--amber);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+
+    .product-name {
+      font-size: 15px;
+      font-weight: 600;
+      margin: 4px 0 8px;
+      line-height: 1.3;
+    }
+
+    .product-rating {
+      display: flex;
+      gap: 2px;
+      margin-bottom: 12px;
+    }
+
+    .star {
+      color: var(--amber);
+      font-size: 12px;
+    }
+
+    .rating-count {
+      font-size: 11px;
+      color: var(--mid-gray);
+      margin-left: 4px;
+    }
+
+    .product-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .product-price {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--charcoal);
+    }
+
+    .product-price small {
+      font-size: 12px;
+      color: var(--mid-gray);
+      font-weight: 400;
+      text-decoration: line-through;
+      margin-left: 4px;
+    }
+
+    .add-btn-sm {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--charcoal);
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .add-btn-sm:hover {
+      background: var(--amber);
+      transform: scale(1.1);
+    }
+
+    /* ─── TRUST BANNER ─── */
+    .trust-section {
+      background: linear-gradient(135deg, var(--forest) 0%, var(--forest-light) 100%);
+      padding: 60px 40px;
+    }
+
+    .trust-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 32px;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    .trust-item {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .trust-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      flex-shrink: 0;
+    }
+
+    .trust-text h4 {
+      color: white;
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .trust-text p {
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    /* ─── VET SECTION ─── */
+    .vet-section {
+      background: var(--warm-white);
+      padding: 80px 40px;
+    }
+
+    .vet-cta-card {
+      background: linear-gradient(135deg, #1E1E1E 0%, #2D4A2D 100%);
+      border-radius: 28px;
+      padding: 56px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 40px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .vet-cta-card::before {
+      content: '';
+      position: absolute;
+      right: -60px;
+      top: -60px;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(232, 160, 32, 0.2) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    .vet-cta-card h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 36px;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 16px;
+      line-height: 1.2;
+    }
+
+    .vet-cta-card p {
+      color: rgba(255, 255, 255, 0.65);
+      font-size: 15px;
+      line-height: 1.6;
+      max-width: 460px;
+    }
+
+    .vet-visual {
+      font-size: 100px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ─── TESTIMONIALS ─── */
+    .testimonials-section {
+      background: var(--cream);
+    }
+
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .testimonial-card {
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 28px;
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      transition: transform 0.3s;
+    }
+
+    .testimonial-card:hover {
+      transform: translateY(-4px);
+    }
+
+    .test-stars {
+      display: flex;
+      gap: 3px;
+      margin-bottom: 16px;
+    }
+
+    .test-text {
+      font-size: 15px;
+      line-height: 1.65;
+      color: var(--charcoal);
+      margin-bottom: 20px;
+      font-style: italic;
+    }
+
+    .test-author {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .author-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--amber), var(--terracotta));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      color: white;
+      font-weight: 700;
+      font-family: 'Playfair Display', serif;
+    }
+
+    .author-name {
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .author-loc {
+      font-size: 12px;
+      color: var(--mid-gray);
+    }
+
+    /* ─── NEWSLETTER ─── */
+    .newsletter-section {
+      background: var(--charcoal);
+      padding: 80px 40px;
+      text-align: center;
+    }
+
+    .newsletter-section h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 40px;
+      color: white;
+      margin-bottom: 16px;
+    }
+
+    .newsletter-section p {
+      color: rgba(255, 255, 255, 0.55);
+      font-size: 16px;
+      margin-bottom: 36px;
+    }
+
+    .newsletter-form {
+      display: flex;
+      gap: 12px;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    .newsletter-input {
+      flex: 1;
+      padding: 14px 20px;
+      border-radius: 100px;
+      border: 1.5px solid rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.08);
+      color: white;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .newsletter-input::placeholder {
+      color: rgba(255, 255, 255, 0.35);
+    }
+
+    .newsletter-input:focus {
+      border-color: var(--amber);
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: #111;
+      padding: 60px 40px 32px;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 48px;
+      max-width: 1280px;
+      margin: 0 auto 48px;
+    }
+
+    .footer-brand p {
+      color: rgba(255, 255, 255, 0.45);
+      font-size: 14px;
+      line-height: 1.7;
+      margin: 16px 0 24px;
+    }
+
+    .social-links {
+      display: flex;
+      gap: 10px;
+    }
+
+    .social-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.2s;
+      text-decoration: none;
+    }
+
+    .social-btn:hover {
+      background: var(--amber);
+    }
+
+    .footer-col h5 {
+      color: white;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .footer-col ul {
+      list-style: none;
+    }
+
+    .footer-col li {
+      margin-bottom: 10px;
+    }
+
+    .footer-col a {
+      color: rgba(255, 255, 255, 0.45);
+      font-size: 14px;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-col a:hover {
+      color: var(--amber);
+    }
+
+    .footer-bottom {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .footer-bottom p {
+      color: rgba(255, 255, 255, 0.3);
+      font-size: 13px;
+    }
+
+    /* ─── MODAL/CART PANEL ─── */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 2000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+      backdrop-filter: blur(4px);
+    }
+
+    .overlay.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .cart-panel {
+      position: fixed;
+      top: 0;
+      right: -480px;
+      bottom: 0;
+      width: 440px;
+      background: var(--warm-white);
+      z-index: 2100;
+      transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      flex-direction: column;
+      box-shadow: -20px 0 60px rgba(0, 0, 0, 0.15);
+    }
+
+    .cart-panel.open {
+      right: 0;
+    }
+
+    .cart-header {
+      padding: 24px 28px;
+      border-bottom: 1px solid var(--light-gray);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .cart-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 700;
+    }
+
+    .close-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--light-gray);
+      border: none;
+      cursor: pointer;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+
+    .close-btn:hover {
+      background: var(--amber);
+      color: white;
+    }
+
+    .cart-items {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px 28px;
+    }
+
+    .cart-item {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--light-gray);
+    }
+
+    .cart-item-img {
+      width: 64px;
+      height: 64px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #F5E6C8, #E0D0A8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      flex-shrink: 0;
+    }
+
+    .cart-item-info {
+      flex: 1;
+    }
+
+    .cart-item-name {
+      font-weight: 600;
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+
+    .cart-item-price {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--forest);
+    }
+
+    .qty-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .qty-btn {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: var(--light-gray);
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 700;
+      transition: background 0.2s;
+    }
+
+    .qty-btn:hover {
+      background: var(--amber);
+      color: white;
+    }
+
+    .qty-num {
+      font-size: 14px;
+      font-weight: 600;
+      min-width: 20px;
+      text-align: center;
+    }
+
+    .remove-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--mid-gray);
+      font-size: 16px;
+      transition: color 0.2s;
+    }
+
+    .remove-btn:hover {
+      color: var(--terracotta);
+    }
+
+    .cart-empty {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--mid-gray);
+    }
+
+    .cart-empty .empty-icon {
+      font-size: 64px;
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    .cart-footer {
+      padding: 20px 28px;
+      border-top: 1px solid var(--light-gray);
+    }
+
+    .cart-total {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .cart-total span {
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .cart-total strong {
+      font-family: 'Playfair Display', serif;
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    .checkout-btn {
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(135deg, var(--amber), var(--terracotta));
+      color: white;
+      border: none;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      transition: all 0.25s;
+    }
+
+    .checkout-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(232, 160, 32, 0.4);
+    }
+
+    /* ─── ORDER MODAL ─── */
+    .order-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 3000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+
+    .order-modal.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .order-modal-bg {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(6px);
+    }
+
+    .order-modal-box {
+      position: relative;
+      z-index: 1;
+      background: var(--warm-white);
+      border-radius: 28px;
+      padding: 48px;
+      width: 90%;
+      max-width: 560px;
+      max-height: 90vh;
+      overflow-y: auto;
+      transform: scale(0.9);
+      transition: transform 0.3s;
+    }
+
+    .order-modal.active .order-modal-box {
+      transform: scale(1);
+    }
+
+    .order-modal-box h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 28px;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--charcoal);
+    }
+
+    .form-input,
+    .form-select {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1.5px solid var(--light-gray);
+      border-radius: 10px;
+      font-size: 14px;
+      font-family: 'DM Sans', sans-serif;
+      background: white;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      color: var(--charcoal);
+    }
+
+    .form-input:focus,
+    .form-select:focus {
+      border-color: var(--amber);
+      box-shadow: 0 0 0 3px rgba(232, 160, 32, 0.12);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .order-summary {
+      background: var(--cream);
+      border-radius: 14px;
+      padding: 20px;
+      margin: 24px 0;
+    }
+
+    .order-summary h4 {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+
+    .order-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+      margin-bottom: 8px;
+      color: var(--mid-gray);
+    }
+
+    .order-row.total {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--charcoal);
+      padding-top: 12px;
+      border-top: 1px solid var(--light-gray);
+      margin-top: 4px;
+    }
+
+    .place-order-btn {
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(135deg, var(--forest), var(--forest-light));
+      color: white;
+      border: none;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      transition: all 0.25s;
+    }
+
+    .place-order-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(45, 74, 45, 0.35);
+    }
+
+    /* ─── SUCCESS MODAL ─── */
+    .success-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 4000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+
+    .success-modal.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .success-box {
+      background: white;
+      border-radius: 28px;
+      padding: 48px;
+      width: 90%;
+      max-width: 440px;
+      text-align: center;
+      transform: scale(0.9);
+      transition: transform 0.3s;
+      position: relative;
+      z-index: 1;
+    }
+
+    .success-modal.active .success-box {
+      transform: scale(1);
+    }
+
+    .success-icon {
+      font-size: 72px;
+      margin-bottom: 20px;
+      display: block;
+      animation: bounce 0.6s ease;
+    }
+
+    .success-box h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .success-box p {
+      color: var(--mid-gray);
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    .order-id {
+      font-size: 13px;
+      color: var(--amber);
+      font-weight: 700;
+      margin: 16px 0;
+    }
+
+    /* ─── TOAST ─── */
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      z-index: 5000;
+      background: var(--charcoal);
+      color: white;
+      padding: 14px 22px;
+      border-radius: 14px;
+      font-size: 14px;
+      font-weight: 500;
+      transform: translateY(20px);
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      max-width: 320px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .toast-icon {
+      font-size: 18px;
+    }
+
+    /* ─── ANIMATIONS ─── */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(24px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeInRight {
+      from {
+        opacity: 0;
+        transform: translateX(40px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translateY(0px);
+      }
+
+      50% {
+        transform: translateY(-8px);
+      }
+    }
+
+    @keyframes bounce {
+
+      0%,
+      100% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.15);
+      }
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.6;
+      }
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 1024px) {
+
+      .pets-grid,
+      .products-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .categories-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      nav {
+        padding: 0 20px;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .hero {
+        grid-template-columns: 1fr;
+        padding: 100px 20px 60px;
+      }
+
+      .hero-visual {
+        display: none;
+      }
+
+      .pets-grid,
+      .products-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .categories-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .trust-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .testimonials-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+
+      section {
+        padding: 60px 20px;
+      }
+
+      .vet-cta-card {
+        grid-template-columns: 1fr;
+      }
+
+      .vet-visual {
+        display: none;
+      }
+
+      .cart-panel {
+        width: 100%;
+        right: -100%;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 480px) {
+
+      .pets-grid,
+      .products-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .categories-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .hero-stats {
+        gap: 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- NAVBAR -->
+  <nav id="navbar">
+    <a href="#" class="nav-logo">
+      <div class="logo-icon">🐾</div>
+      <span class="logo-text">Dog<span>AI</span>.in</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#pets">Buy Pets</a></li>
+      <li><a href="#products">Shop</a></li>
+      <li><a href="#vet">Vet Consult</a></li>
+      <li><a href="#testimonials">Reviews</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <div class="nav-actions">
+
+      <button class="btn btn-ghost" id="signInBtn" onclick="openAuthModal('login')">Sign In</button>
+
+      <button class="btn btn-primary" id="getStartedBtn" onclick="openAuthModal('signup')">Get Started ✨</button>
+      <div class="cart-btn" onclick="openCart()">
+        🛒
+        <span class="cart-badge" id="cartBadge">0</span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section style="padding:0; background: var(--cream);">
+    <div class="hero">
+      <div class="hero-content">
+        <div class="hero-badge">🏆 India's #1 Pet Marketplace</div>
+        <h1>
+          Find Your Perfect
+          <em>Furry Friend</em>
+        </h1>
+        <p class="hero-desc">From adorable puppies to playful kittens — buy, adopt, and care for pets with everything you
+          need in one trusted place. Food, toys, vets, and more.</p>
+        <div class="hero-actions">
+          <a href="#pets" class="btn btn-primary">🐕 Browse Pets</a>
+          <a href="#products" class="btn btn-ghost">🛍️ Shop Products</a>
+        </div>
+        <div class="hero-stats">
+          <div class="stat">
+            <span class="stat-num">12K+</span>
+            <span class="stat-label">Happy Pet Parents</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat">
+            <span class="stat-num">850+</span>
+            <span class="stat-label">Verified Breeders</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat">
+            <span class="stat-num">4.9★</span>
+            <span class="stat-label">Average Rating</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <span class="orb-3d orb-a"></span>
+        <span class="orb-3d orb-b"></span>
+        <div class="hero-card-main natural-hero-card">
+          <div class="hero-img-placeholder"><img class="hero-photo" src="https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg?auto=compress&cs=tinysrgb&w=1400" alt="Golden Retriever" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><div class="hero-img-fallback">🦮</div></div>
+          <div class="hero-card-info">
+            <div class="pet-info">
+              <h3>Golden Retriever</h3>
+              <p>8 weeks • Male • Vaccinated</p>
+            </div>
+            <div class="pet-price">₹32,000</div>
+          </div>
+        </div>
+        <div class="floating-cards">
+          <div class="float-card">
+            <div class="float-icon">✅</div>
+            <div class="float-info">
+              <strong>KCI Certified</strong>
+              Verified Breeder
+            </div>
+          </div>
+          <div class="float-card">
+            <div class="float-icon">🚚</div>
+            <div class="float-info">
+              <strong>Safe Delivery</strong>
+              All India Shipping
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CATEGORIES -->
+  <section class="categories-section" id="categories">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag light">Browse by Category</span>
+        <h2 class="section-title light">Everything Your Pet Needs</h2>
+      </div>
+      <div class="categories-grid">
+        <a href="#pets" class="cat-card" onclick="filterPets('dog')">
+          <span class="cat-icon">🐕</span>
+          <div class="cat-name">Dogs</div>
+          <div class="cat-count">240+ listings</div>
+        </a>
+        <a href="#pets" class="cat-card" onclick="filterPets('cat')">
+          <span class="cat-icon">🐈</span>
+          <div class="cat-name">Cats</div>
+          <div class="cat-count">180+ listings</div>
+        </a>
+        <a href="#products" class="cat-card" onclick="switchTab('food')">
+          <span class="cat-icon">🥩</span>
+          <div class="cat-name">Pet Food</div>
+          <div class="cat-count">500+ products</div>
+        </a>
+        <a href="#products" class="cat-card" onclick="switchTab('toys')">
+          <span class="cat-icon">🧸</span>
+          <div class="cat-name">Toys</div>
+          <div class="cat-count">300+ products</div>
+        </a>
+        <a href="#vet" class="cat-card">
+          <span class="cat-icon">🩺</span>
+          <div class="cat-name">Vet Care</div>
+          <div class="cat-count">50+ vets online</div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- PETS MARKETPLACE -->
+  <section class="pets-section" id="pets">
+    <div class="container">
+      <div class="section-header"
+        style="display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:20px;">
+        <div>
+          <span class="section-tag">Pets for Sale & Adoption</span>
+          <h2 class="section-title">Find Your New Best Friend</h2>
+          <p class="section-desc">All pets are health-checked and come with vaccination certificates from verified
+            breeders.</p>
+        </div>
+      </div>
+
+      <div class="filter-bar" id="petFilters">
+        <button class="filter-btn active" onclick="filterPets('all', this)">All Pets</button>
+        <button class="filter-btn" onclick="filterPets('dog', this)">🐕 Dogs</button>
+        <button class="filter-btn" onclick="filterPets('cat', this)">🐈 Cats</button>
+        <button class="filter-btn" onclick="filterPets('rabbit', this)">🐇 Rabbits</button>
+        <button class="filter-btn" onclick="filterPets('fish', this)">🐠 Fish</button>
+      </div>
+
+      <div class="pets-grid" id="petsGrid"></div>
+    </div>
+  </section>
+
+  <!-- TRUST SECTION -->
+  <div class="trust-section">
+    <div class="trust-grid">
+      <div class="trust-item">
+        <div class="trust-icon">🛡️</div>
+        <div class="trust-text">
+          <h4>100% Verified Breeders</h4>
+          <p>Every breeder is KCI certified and regularly inspected for ethical practices.</p>
+        </div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-icon">💉</div>
+        <div class="trust-text">
+          <h4>Health Guaranteed</h4>
+          <p>All pets come with vaccination records and a 30-day health guarantee.</p>
+        </div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-icon">🚚</div>
+        <div class="trust-text">
+          <h4>Pan-India Delivery</h4>
+          <p>Safe, climate-controlled transport to your doorstep, anywhere in India.</p>
+        </div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-icon">🤝</div>
+        <div class="trust-text">
+          <h4>Lifetime Support</h4>
+          <p>Our experts are available 24/7 for any questions about your new pet.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRODUCTS SHOP -->
+  <section class="products-section" id="products">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Pet Store</span>
+        <h2 class="section-title">Premium Pet Products</h2>
+        <p class="section-desc">Carefully curated food, accessories, and toys from India's top brands.</p>
+      </div>
+
+      <div class="products-tabs" id="productTabs">
+        <button class="tab-btn active" onclick="switchTab('food', this)">🥩 Food</button>
+        <button class="tab-btn" onclick="switchTab('toys', this)">🧸 Toys</button>
+        <button class="tab-btn" onclick="switchTab('accessories', this)">🎀 Accessories</button>
+        <button class="tab-btn" onclick="switchTab('grooming', this)">✂️ Grooming</button>
+      </div>
+
+      <div class="products-grid" id="productsGrid"></div>
+    </div>
+  </section>
+
+  <!-- VET CONSULTATION -->
+  <section class="vet-section" id="vet">
+    <div class="container">
+      <div class="vet-cta-card">
+        <div>
+          <span class="section-tag" style="color:var(--amber);">Online Vet Consultation</span>
+          <h2>Expert Vets, Available 24/7</h2>
+          <p>Connect with certified veterinarians from the comfort of your home. Get instant advice, prescriptions, and
+            follow-ups — all for your beloved pet's wellbeing.</p>
+          <div style="display:flex; gap:12px; margin-top:28px; flex-wrap:wrap;">
+            <button class="btn btn-primary" onclick="openConsultationOptions()">Book Consultation —
+              ₹299</button>
+            <button class="btn btn-ghost" style="border-color:rgba(255,255,255,0.2); color:rgba(255,255,255,0.7);"
+              onclick="openVetChat()">Chat with a Vet</button>
+          </div>
+          <div style="display:flex; gap:24px; margin-top:32px;">
+            <div style="color:white;">
+              <strong style="font-size:20px; font-family:'Playfair Display',serif;">50+</strong>
+              <p style="font-size:12px; color:rgba(255,255,255,0.5); margin-top:2px;">Specialist Vets</p>
+            </div>
+            <div style="color:white;">
+              <strong style="font-size:20px; font-family:'Playfair Display',serif;">4.8★</strong>
+              <p style="font-size:12px; color:rgba(255,255,255,0.5); margin-top:2px;">Average Rating</p>
+            </div>
+            <div style="color:white;">
+              <strong style="font-size:20px; font-family:'Playfair Display',serif;">&lt;5 min</strong>
+              <p style="font-size:12px; color:rgba(255,255,255,0.5); margin-top:2px;">Wait Time</p>
+            </div>
+          </div>
+        </div>
+        <div class="vet-visual">🩺</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="testimonials-section" id="testimonials">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Customer Stories</span>
+        <h2 class="section-title">Loved by 12,000+ Pet Parents</h2>
+      </div>
+      <div class="testimonials-grid" id="testimonialGrid"></div>
+    </div>
+  </section>
+
+  <!-- NEWSLETTER -->
+  <section class="newsletter-section" id="contact">
+    <div class="container">
+      <h2>Stay in the Loop 🐾</h2>
+      <p>Get new pet listings, exclusive deals, and expert pet care tips directly in your inbox.</p>
+      <div class="newsletter-form">
+        <input type="email" class="newsletter-input" placeholder="Enter your email address" id="newsletterEmail">
+        <button class="btn btn-primary" onclick="subscribeNewsletter()">Subscribe</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="#" class="nav-logo" style="margin-bottom:4px;">
+          <div class="logo-icon">🐾</div>
+          <span class="logo-text" style="color:white;">Dog<span>AI</span>.in</span>
+        </a>
+        <p>India's most trusted pet marketplace. We connect pet lovers with verified breeders, premium products, and
+          expert care — all in one place.</p>
+        <div class="social-links">
+          <a class="social-btn" onclick="showToast('📱 Instagram coming soon!')">📸</a>
+          <a class="social-btn" onclick="showToast('🐦 Twitter coming soon!')">🐦</a>
+          <a class="social-btn" onclick="showToast('📘 Facebook coming soon!')">📘</a>
+          <a class="social-btn" onclick="showToast('▶️ YouTube coming soon!')">▶️</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h5>Marketplace</h5>
+        <ul>
+          <li><a href="#pets">Buy Pets</a></li>
+          <li><a href="#pets">Adopt a Pet</a></li>
+          <li><a href="#" onclick="showToast('📋 Sell your pets!')">Sell Your Pet</a></li>
+          <li><a href="#" onclick="showToast('🔍 Advanced search')">Search Breeders</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Pet Shop</h5>
+        <ul>
+          <li><a href="#products" onclick="switchTab('food')">Pet Food</a></li>
+          <li><a href="#products" onclick="switchTab('toys')">Toys & Accessories</a></li>
+          <li><a href="#products" onclick="switchTab('grooming')">Grooming</a></li>
+          <li><a href="#vet">Vet Consultation</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Support</h5>
+        <ul>
+          <li><a href="help-center.html">Help Center</a></li>
+          <li><a href="privacy-policy.html">Privacy Policy</a></li>
+          <li><a href="terms-of-service.html">Terms of Service</a></li>
+          <li><a href="contact-us.html">Contact Us</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2024 DogAI.in — Made with ❤️ for pet lovers across India</p>
+      <p style="display:flex; gap:16px;">
+        <a href="#" style="color:rgba(255,255,255,0.3); font-size:13px; text-decoration:none;">Privacy</a>
+        <a href="#" style="color:rgba(255,255,255,0.3); font-size:13px; text-decoration:none;">Terms</a>
+        <a href="#" style="color:rgba(255,255,255,0.3); font-size:13px; text-decoration:none;">Sitemap</a>
+      </p>
+    </div>
+  </footer>
+
+  <!-- CART PANEL -->
+  <div class="overlay" id="overlay" onclick="closeCart()"></div>
+  <div class="cart-panel" id="cartPanel">
+    <div class="cart-header">
+      <h2 class="cart-title">Your Cart 🛒</h2>
+      <button class="close-btn" onclick="closeCart()">✕</button>
+    </div>
+    <div class="cart-items" id="cartItems">
+      <div class="cart-empty">
+        <span class="empty-icon">🛒</span>
+        <p style="font-weight:600; font-size:16px; color:var(--charcoal); margin-bottom:8px;">Your cart is empty</p>
+        <p style="font-size:14px;">Add some amazing pets and products!</p>
+      </div>
+    </div>
+    <div class="cart-footer" id="cartFooter" style="display:none;">
+      <div class="cart-total">
+        <span>Total</span>
+        <strong id="cartTotal">₹0</strong>
+      </div>
+      <div style="display:flex; gap:8px; margin-bottom:10px; font-size:13px; color:var(--mid-gray);">
+        <span>🚚 Free delivery on orders above ₹999</span>
+      </div>
+      <button class="checkout-btn" onclick="openCheckout()">Proceed to Checkout →</button>
+    </div>
+  </div>
+
+  <!-- ORDER MODAL -->
+  <div class="order-modal" id="orderModal">
+    <div class="order-modal-bg" onclick="closeCheckout()"></div>
+    <div class="order-modal-box">
+      <button class="close-btn" style="position:absolute;top:20px;right:20px;" onclick="closeCheckout()">✕</button>
+      <h2>Complete Your Order</h2>
+
+      <div style="margin-bottom:20px;">
+        <p
+          style="font-size:13px; font-weight:700; text-transform:uppercase; letter-spacing:0.8px; color:var(--mid-gray); margin-bottom:16px;">
+          Delivery Information</p>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">First Name</label>
+            <input type="text" class="form-input" id="firstName" placeholder="Rahul">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Last Name</label>
+            <input type="text" class="form-input" id="lastName" placeholder="Sharma">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Phone Number</label>
+          <input type="tel" class="form-input" id="phone" placeholder="+91 98765 43210">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email Address</label>
+          <input type="email" class="form-input" id="email" placeholder="rahul@example.com">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Delivery Address</label>
+          <input type="text" class="form-input" id="address" placeholder="House/Flat No, Street, Area">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">City</label>
+            <input type="text" class="form-input" id="city" placeholder="Mumbai">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Pincode</label>
+            <input type="text" class="form-input" id="pincode" placeholder="400001">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">State</label>
+          <select class="form-select" id="state">
+            <option value="">Select State</option>
+            <option>Maharashtra</option>
+            <option>Delhi</option>
+            <option>Karnataka</option>
+            <option>Tamil Nadu</option>
+            <option>West Bengal</option>
+            <option>Gujarat</option>
+            <option>Rajasthan</option>
+            <option>Uttar Pradesh</option>
+            <option>Telangana</option>
+            <option>Kerala</option>
+            <option>Punjab</option>
+            <option>Haryana</option>
+          </select>
+        </div>
+      </div>
+
+      <div style="margin-bottom:20px;">
+        <p
+          style="font-size:13px; font-weight:700; text-transform:uppercase; letter-spacing:0.8px; color:var(--mid-gray); margin-bottom:16px;">
+          Payment Method</p>
+        <div style="display:flex; flex-direction:column; gap:10px;" id="paymentMethods">
+          <label
+            style="display:flex; align-items:center; gap:12px; padding:14px 16px; border:1.5px solid var(--light-gray); border-radius:10px; cursor:pointer; transition:border-color 0.2s;"
+            class="payment-option" onclick="selectPayment(this, 'upi')">
+            <input type="radio" name="payment" value="upi" style="accent-color:var(--amber);">
+            <span style="font-size:18px;">📱</span>
+            <div><strong style="font-size:14px;">UPI / PhonePe / GPay</strong><br><small
+                style="color:var(--mid-gray);">Instant payment</small></div>
+          </label>
+          <label
+            style="display:flex; align-items:center; gap:12px; padding:14px 16px; border:1.5px solid var(--light-gray); border-radius:10px; cursor:pointer;"
+            class="payment-option" onclick="selectPayment(this, 'card')">
+            <input type="radio" name="payment" value="card" style="accent-color:var(--amber);">
+            <span style="font-size:18px;">💳</span>
+            <div><strong style="font-size:14px;">Credit / Debit Card</strong><br><small
+                style="color:var(--mid-gray);">Visa, Mastercard, RuPay</small></div>
+          </label>
+          <label
+            style="display:flex; align-items:center; gap:12px; padding:14px 16px; border:1.5px solid var(--light-gray); border-radius:10px; cursor:pointer;"
+            class="payment-option" onclick="selectPayment(this, 'cod')">
+            <input type="radio" name="payment" value="cod" style="accent-color:var(--amber);">
+            <span style="font-size:18px;">💵</span>
+            <div><strong style="font-size:14px;">Cash on Delivery</strong><br><small style="color:var(--mid-gray);">Pay
+                when you receive</small></div>
+          </label>
+        </div>
+      </div>
+
+      <div class="order-summary" id="orderSummaryBox"></div>
+
+      <!-- Stripe Card Element — shown when Card payment is selected -->
+      <div id="stripe-card-wrapper" style="display:none; margin-bottom:16px;">
+        <p
+          style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.8px; color:var(--mid-gray); margin-bottom:8px;">
+          Card Details</p>
+        <div id="stripe-card-element"
+          style="padding:13px 14px; border:1.5px solid var(--amber); border-radius:10px; background:white;"></div>
+        <p id="stripe-card-errors" style="color:#C4622D; font-size:12px; margin-top:6px;"></p>
+      </div>
+
+      <button class="place-order-btn" id="placeOrderBtn" onclick="placeOrder()">🐾 Place Order Securely</button>
+
+      <p style="text-align:center; font-size:12px; color:var(--mid-gray); margin-top:14px;">
+        🔒 Your payment info is encrypted and secure
+      </p>
+    </div>
+  </div>
+
+  <!-- SUCCESS MODAL -->
+  <div class="success-modal" id="successModal">
+    <div class="order-modal-bg" onclick="closeSuccess()"></div>
+    <div class="success-box">
+      <span class="success-icon">🎉</span>
+      <h2>Order Placed!</h2>
+      <p>Thank you for your order! Your furry friend(s) and products are on their way.</p>
+      <div class="order-id" id="orderId"></div>
+      <p style="font-size:13px; color:var(--mid-gray);">You'll receive a confirmation SMS and email shortly. Our team
+        will contact you within 2 hours.</p>
+      <button class="btn btn-primary" style="margin-top:24px; width:100%; justify-content:center;"
+        onclick="closeSuccess()">Continue Shopping 🐾</button>
+    </div>
+  </div>
+
+
+  <!-- CONSULTATION OPTIONS MODAL -->
+  <div class="order-modal" id="consultationModal">
+    <div class="order-modal-bg" onclick="closeConsultationOptions()"></div>
+    <div class="order-modal-box" style="max-width:520px;">
+      <button class="close-btn" style="position:absolute;top:20px;right:20px;" onclick="closeConsultationOptions()">✕</button>
+      <h2 style="margin-bottom:10px;">Choose Consultation Mode</h2>
+      <p style="font-size:14px; color:var(--mid-gray); margin-bottom:20px;">Select how you want to continue for your pet consultation.</p>
+      <div style="display:grid; gap:12px;">
+        <button class="place-order-btn" onclick="bookPaidConsultation()">💳 Pay ₹299 & Continue to Checkout</button>
+        <button class="btn btn-ghost" style="justify-content:center; padding:14px;" onclick="startVideoConsultation()">🎥 Start Video Call</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- VET CHAT MODAL -->
+  <div class="order-modal" id="vetChatModal">
+    <div class="order-modal-bg" onclick="closeVetChat()"></div>
+    <div class="vet-chat-box">
+      <div class="vet-chat-head">
+        <div>
+          <h3>Vet Care Assistant</h3>
+          <p>Live guidance for your pet care questions</p>
+        </div>
+        <button class="close-btn" onclick="closeVetChat()">✕</button>
+      </div>
+      <div id="vetChatMessages" class="vet-chat-messages"></div>
+      <div class="vet-chat-quick" id="vetQuickReplies"></div>
+      <form class="vet-chat-form" onsubmit="sendVetMessage(event)">
+        <input type="text" id="vetChatInput" class="vet-chat-input" placeholder="Describe your pet's symptoms or concern..." maxlength="300" />
+        <button type="submit" class="btn btn-primary vet-chat-send">Send</button>
+      </form>
+    </div>
+  </div>
+  <!-- TOAST -->
+  <div class="toast" id="toast">
+    <span class="toast-icon" id="toastIcon">✅</span>
+    <span id="toastMsg">Item added to cart</span>
+  </div>
+  <div class="order-modal" id="authModal">
+    <div class="order-modal-bg" onclick="closeAuthModal()"></div>
+    <div class="order-modal-box" style="max-width: 400px;">
+      <button class="close-btn" style="position:absolute;top:20px;right:20px;" onclick="closeAuthModal()">✕</button>
+
+      <div id="loginForm">
+        <h2 style="font-family:'Playfair Display',serif; margin-bottom:20px;">Welcome Back 🐾</h2>
+        <div class="form-group">
+          <label class="form-label">Email Address</label>
+          <input type="email" class="form-input" id="loginEmail" placeholder="your@email.com">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input type="password" class="form-input" id="loginPass" placeholder="••••••••">
+        </div>
+        <p style="text-align:right; font-size:12px; margin-top:-10px; margin-bottom:15px;">
+          <a href="javascript:void(0)" onclick="toggleAuth('forgot')"
+            style="color:var(--mid-gray); text-decoration:none;">Forgot password?</a>
+        </p>
+        <button class="place-order-btn" id="loginBtn" onclick="handleLogin()">Sign In</button>
+        <p style="text-align:center; font-size:13px; margin-top:20px; color:var(--mid-gray);">
+          New to DogAI? <a href="javascript:void(0)" onclick="toggleAuth('signup')"
+            style="color:var(--amber); font-weight:600; text-decoration:none;">Create account</a>
+        </p>
+      </div>
+
+      <div id="signupForm" style="display:none;">
+        <h2 style="font-family:'Playfair Display',serif; margin-bottom:20px;">Join the Pack 🐕</h2>
+        <div class="form-group">
+          <label class="form-label">Full Name</label>
+          <input type="text" class="form-input" id="regName" placeholder="Rahul Sharma">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input type="email" class="form-input" id="regEmail" placeholder="rahul@example.com">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Phone</label>
+          <input type="tel" class="form-input" id="regPhone" placeholder="9876543210">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input type="password" class="form-input" id="regPass" placeholder="Min. 6 characters">
+        </div>
+        <button class="place-order-btn" id="signupBtn" onclick="handleSignup()">Create Account</button>
+        <p style="text-align:center; font-size:13px; margin-top:20px; color:var(--mid-gray);">
+          Already have an account? <a href="javascript:void(0)" onclick="toggleAuth('login')"
+            style="color:var(--amber); font-weight:600; text-decoration:none;">Sign in</a>
+        </p>
+      </div>
+
+      <div id="forgotForm" style="display:none;">
+        <h2 style="font-family:'Playfair Display',serif; margin-bottom:20px;">Reset Password 🔑</h2>
+        <p style="font-size:13px; color:var(--mid-gray); margin-bottom:20px;">Enter your email and we'll send you a link
+          to reset your password.</p>
+        <div class="form-group">
+          <label class="form-label">Email Address</label>
+          <input type="email" class="form-input" id="forgotEmail" placeholder="your@email.com">
+        </div>
+        <button class="place-order-btn" id="forgotBtn" onclick="handleForgot()">Send Reset Link</button>
+        <p style="text-align:center; font-size:13px; margin-top:20px;">
+          Remembered it? <a href="javascript:void(0)" onclick="toggleAuth('login')"
+            style="color:var(--amber); font-weight:600; text-decoration:none;">Back to login</a>
+        </p>
+      </div>
+    </div>
+
+  </div>
+  <script src="https://js.stripe.com/v3/"></script>
+  <script src="api.js"></script>
+  <script src="auth.js"></script>
+  <script src="payment.js"></script>
+  <script src="script.js"></script>
+
+
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+

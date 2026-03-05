@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile — DogAI.in</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .profile-container {
+            max-width: 900px;
+            margin: 120px auto;
+            padding: 40px;
+            background: var(--warm-white);
+            border-radius: 28px;
+            box-shadow: var(--shadow-warm);
+        }
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 40px;
+            margin-top: 30px;
+        }
+
+        .profile-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            border-right: 1px solid var(--light-gray);
+            padding-right: 20px;
+        }
+
+        .p-nav-btn {
+            padding: 12px 20px;
+            border: none;
+            background: none;
+            text-align: left;
+            cursor: pointer;
+            border-radius: 12px;
+            font-weight: 600;
+            color: var(--mid-gray);
+            transition: 0.3s;
+        }
+
+        .p-nav-btn.active {
+            background: var(--amber);
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <a href="index.html" class="nav-logo">
+            <div class="logo-icon">🐾</div>
+            <span class="logo-text">Dog<span>AI</span>.in</span>
+        </a>
+        <button class="btn btn-ghost" onclick="window.location.href='index.html'">← Back to Shop</button>
+    </nav>
+
+    <div class="profile-container">
+        <h1 style="font-family:'Playfair Display', serif;">User Dashboard</h1>
+
+        <div class="profile-grid">
+            <div class="profile-nav">
+                <button class="p-nav-btn active" onclick="switchProfileTab('details', this)">👤 Personal
+                    Details</button>
+                <button class="p-nav-btn" onclick="switchProfileTab('orders', this)">📦 Order History</button>
+                <button class="p-nav-btn" onclick="switchProfileTab('settings', this)">⚙️ Account Settings</button>
+                <button class="p-nav-btn" style="margin-top:20px; color:var(--terracotta);" onclick="logoutUser()">👋
+                    Logout</button>
+            </div>
+
+            <div class="profile-content">
+                <div id="tab-details" class="p-section">
+                    <h3>Contact Information</h3>
+                    <div class="order-summary">
+                        <div class="order-row"><span>Name</span><strong id="profName">Loading...</strong></div>
+                        <div class="order-row"><span>Email</span><strong id="profEmail">Loading...</strong></div>
+                        <div class="order-row"><span>Phone</span><strong id="profPhone">Loading...</strong></div>
+                    </div>
+                </div>
+
+                <div id="tab-orders" class="p-section" style="display:none;">
+                    <h3>Recent Orders</h3>
+                    <div id="orderList">Loading orders...</div>
+                </div>
+
+                <div id="tab-settings" class="p-section" style="display:none;">
+                    <h3>Account Settings</h3>
+                    <div class="form-group">
+                        <label class="form-label">Full Name</label>
+                        <input type="text" class="form-input" id="setNames">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Phone Number</label>
+                        <input type="tel" class="form-input" id="setPhones">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">New Password (Leave blank to keep current)</label>
+                        <input type="password" class="form-input" id="setPass">
+                    </div>
+                    <button class="place-order-btn" id="saveSettingsBtn" onclick="saveSettings()">Save Changes</button>
+                    <div id="settingsMsg" style="margin-top:10px; font-size:14px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="api.js"></script>
+    <script src="profile.js"></script>
+</body>
+
+</html>

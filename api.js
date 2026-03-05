@@ -2,9 +2,11 @@
 // api.js — Backend API calls + Nav UI
 // ═══════════════════════════════════════════════════════════════════
 
-const API_BASE = 'http://localhost:5000/api';
-// Change to your Render URL when deploying live:
-// const API_BASE = 'https://dogai-backend.onrender.com/api';
+const API_BASE = (() => {
+  const host = window.location.hostname;
+  if (host === 'localhost' || host === '127.0.0.1') return 'http://localhost:5000/api';
+  return `${window.location.origin}/api`;
+})();
 
 // ── Token storage ─────────────────────────────────────────────────────
 const getToken = () => localStorage.getItem('dogai_token');
@@ -31,7 +33,7 @@ async function apiCall(endpoint, method = 'GET', body = null) {
     return { ok: res.ok, status: res.status, ...data };
   } catch (err) {
     console.error('API Error:', err);
-    return { ok: false, message: 'Cannot connect to server. Is backend running on port 5000?' };
+    return { ok: false, message: 'Cannot connect to server. Please try again.' };
   }
 }
 
@@ -104,3 +106,4 @@ function hideLoadingBtn(id, text) {
 document.addEventListener('DOMContentLoaded', () => {
   updateNavUI(getToken() ? getUser() : null);
 });
+
